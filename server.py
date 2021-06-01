@@ -30,11 +30,9 @@ class Index:
             file = open(filename, 'wb+')
             file.write(base64.standard_b64decode(image))
             file.close()
-            print(filename)
+
             # 解析缓存图片获取验证码
             solution = AmazonCaptcha(filename).solve()
-
-            print(solution)
 
             # 删除缓存图片
             os.remove(filename)
