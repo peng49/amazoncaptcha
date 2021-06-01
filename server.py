@@ -14,10 +14,10 @@ class Index:
             captcha = AmazonCaptcha.fromlink(web.input('url').url)
             solution = captcha.solve()
             return json.dumps({'code': 200, 'message': 'Success', 'data': solution})
-        except (KeyError, AttributeError):
-            return json.dumps({'code': 400, 'error': '参数错误'})
-        except:
-            return json.dumps({'code': 500, 'error': '服务异常'})
+        except (KeyError, AttributeError) as e:
+            return json.dumps({'code': 400, 'error': '参数错误:' + str(e)})
+        except BaseException as e:
+            return json.dumps({'code': 500, 'error': '服务异常:' + str(e)})
 
     def POST(self):
         try:
