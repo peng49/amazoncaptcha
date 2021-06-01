@@ -11,7 +11,7 @@ curl http://localhost:8080?url=https://images-na.ssl-images-amazon.com/captcha/c
 
 使用POST方式调用
 ```
-curl -X POST —H 'Content-Type: application/x-www-form-urlencoded' -d image='验证码图片base64编码' http://localhost:8080
+curl -X POST -d image='验证码图片base64编码' http://localhost:8080
 ```
 
 返回结果
