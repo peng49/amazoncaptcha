@@ -21,9 +21,13 @@ class Index:
 
     def POST(self):
         try:
-            input = web.input('image')  # 验证码图片base64编码
+            if re.search(r'application/json', str(web.ctx.env.get('CONTENT_TYPE')), re.I) is not None:
+                # application/json
+                input = json.loads(web.data())
+            else:
+                input = web.input('image')  # 验证码图片base64编码
 
-            image = re.sub(r' ', '+', input.image)
+            image = re.sub(r' ', '+', input['image'])
 
             # 通过base64生成缓存图片
             filename = '/tmp/' + str(uuid.uuid4()) + '.jpg'
@@ -38,10 +42,10 @@ class Index:
             os.remove(filename)
 
             return json.dumps({'code': 200, 'message': 'Success', 'data': solution})
-        except (KeyError, AttributeError):
-            return json.dumps({'code': 400, 'error': '参数错误'})
-        except:
-            return json.dumps({'code': 500, 'error': '服务异常'})
+        except (KeyError, AttributeError) as e:
+            return json.dumps({'code': 400, 'error': '参数错误:'+str(e)})
+        except BaseException as e:
+            return json.dumps({'code': 500, 'error': '服务异常:'+str(e)})
 
 
 if __name__ == '__main__':
